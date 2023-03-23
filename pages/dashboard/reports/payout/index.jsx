@@ -19,7 +19,8 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 
 const ExportPDF = () => {
-
+  const doc = new jsPDF('landscape')
+  doc.autoTable({ html: '#tableToPrint' })
 }
 
 const PayoutReport = () => {
@@ -28,9 +29,9 @@ const PayoutReport = () => {
     position: 'top-right'
   })
   useEffect(() => {
-    BackendAxios.post(`/api/razorpay/fetch-payout`).then((res)=>{
+    BackendAxios.post(`/api/razorpay/fetch-payout`).then((res) => {
       console.log(res.data)
-    }).catch(err=>{
+    }).catch(err => {
       Toast({
         status: 'error',
         title: 'Error Occured',
@@ -74,7 +75,7 @@ const PayoutReport = () => {
       <DashboardWrapper titleText={'Payout Reports'}>
 
         <HStack mt={16} mb={4}>
-          <Button colorScheme={'red'}>PDF Export</Button>
+          <Button colorScheme={'red'} onClick={ExportPDF}>PDF Export</Button>
           <Button colorScheme={'whatsapp'}>Excel Export</Button>
         </HStack>
         <Box className='ag-theme-alpine' h={'sm'}>
@@ -86,19 +87,19 @@ const PayoutReport = () => {
           </AgGridReact>
         </Box>
 
-          <Table>
-            <Thead>
-              <Tr>
-                {
-                  colDefs.map((item, key)=>{
-                    return(
-                      <Th>{item.headerName}</Th>
-                    )
-                  })
-                }
-              </Tr>
-            </Thead>
-          </Table>
+        <Table id='tableToPrint'>
+          <Thead>
+            <Tr>
+              {
+                colDefs.map((item, key) => {
+                  return (
+                    <Th>{item.headerName}</Th>
+                  )
+                })
+              }
+            </Tr>
+          </Thead>
+        </Table>
 
       </DashboardWrapper>
     </>
