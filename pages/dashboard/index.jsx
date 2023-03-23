@@ -34,15 +34,9 @@ import SimpleAccordion from '../../hocs/SimpleAccordion'
 import DashboardWrapper from '../../hocs/DashboardLayout'
 import Link from 'next/link'
 import BackendAxios from '../../lib/axios'
+import Payout from './services/payout'
 
 const Dashboard = () => {
-  const [newNotification, setNewNotification] = useState(true)
-  const [notifications, setNotifications] = useState([
-    {
-      title: "Under Development",
-      content: "This website is currently under development. Contact support for any issues."
-    }
-  ])
   let isProfileComplete
   const [profileAlert, setProfileAlert] = useState(false)
 
@@ -105,7 +99,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <DashboardWrapper titleText='Dashboard'>
+      {/* <DashboardWrapper titleText='Dashboard'>
         <Stack direction={['row']}
           w={'full'} py={8} spacing={[0, 4]}
           justifyContent={'space-between'}
@@ -244,45 +238,10 @@ const Dashboard = () => {
               options={options}
             />
           </Box>
-          <Box
-            w={['full', 'md', 'xl']}
-            p={4} rounded={12}
-            bg={'white'}
-            boxShadow={'md'}
-          >
-            <Text mb={4}>New Notifications</Text>
-            {newNotification ? (
-              notifications.map((notification, key) =>
-                <SimpleAccordion
-                  key={key}
-                  title={notification.title}
-                  content={notification.content}
-                />
-              )
-            ) : <Box display={'grid'} placeContent={'center'}>No new notifications</Box>}
-          </Box>
         </Stack>
-
-        {/* Profile Incompletion Alert */}
-        <Modal isOpen={profileAlert} isCentered>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Incomplete Profile</ModalHeader>
-            <ModalBody>
-              Your profile is incomplete. Please complete your profile to start using our services.
-            </ModalBody>
-
-            <ModalFooter>
-              <Link href={'/dashboard/profile/edit?pageId=profile'}>
-                <Button colorScheme='blue' mr={3}>
-                  Complete Now
-                </Button>
-              </Link>
-              <Button variant='ghost' onClick={() => setProfileAlert(false)}>Finish Later</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </DashboardWrapper>
+      </DashboardWrapper> */}
+      
+      <Payout />
     </>
   )
 }

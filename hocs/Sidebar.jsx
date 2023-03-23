@@ -13,7 +13,7 @@ import {
   AccordionIcon,
   AccordionPanel,
 } from "@chakra-ui/react";
-import { BiRupee, BiUser, BiPowerOff } from "react-icons/bi";
+import { BiRupee, BiUser, BiPowerOff, BiTransferAlt } from "react-icons/bi";
 import { VscDashboard } from "react-icons/vsc";
 import { IoMdHelpBuoy } from "react-icons/io";
 import BackendAxios from "../lib/axios";
@@ -38,12 +38,12 @@ export const SidebarOptions =
           id: "view-profile",
           soon: false,
         },
-        {
-          title: 'edit profile',
-          link: '/dashboard/profile/edit?pageId=profile',
-          id: "edit-profile",
-          soon: false,
-        },
+        // {
+        //   title: 'edit profile',
+        //   link: '/dashboard/profile/edit?pageId=profile',
+        //   id: "edit-profile",
+        //   soon: false,
+        // },
         {
           title: 'reset MPIN',
           link: '/dashboard/profile/reset-mpin?pageId=profile',
@@ -70,64 +70,10 @@ export const SidebarOptions =
       icon: <BiRupee />,
       children: [
         {
-          title: 'Activate services',
-          link: '/dashboard/services/activate?pageId=services',
-          id: "activate",
-          soon: false,
-        },
-        {
-          title: 'AePS services',
-          link: '/dashboard/services/aeps?pageId=services',
-          id: "aeps",
-          soon: false,
-        },
-        {
-          title: 'DMT services',
-          link: '/dashboard/services/dmt?pageId=services',
-          id: "dmt",
-          soon: false,
-        },
-        {
-          title: 'BBPS services',
-          link: '/dashboard/services/bbps?pageId=services',
-          id: "bbps",
-          soon: false,
-        },
-        {
-          title: 'recharge',
-          link: '/dashboard/services/recharge?pageId=services',
-          id: "recharge",
-          soon: false,
-        },
-        {
           title: 'payout',
           link: '/dashboard/services/payout?pageId=services',
           id: "payout",
           soon: false,
-        },
-        {
-          title: 'axis account opening',
-          link: '/dashboard/services/payout?pageId=services',
-          id: "axis",
-          soon: true,
-        },
-        {
-          title: 'LIC services',
-          link: '/dashboard/services/payout?pageId=services',
-          id: "lic",
-          soon: true,
-        },
-        {
-          title: 'PAN services',
-          link: '/dashboard/services/payout?pageId=services',
-          id: "pan",
-          soon: true,
-        },
-        {
-          title: 'CMS services',
-          link: '/dashboard/services/payout?pageId=services',
-          id: "cms",
-          soon: true,
         },
       ]
     },
@@ -136,7 +82,14 @@ export const SidebarOptions =
       title: 'fund request',
       id: 'request',
       icon: <GiReceiveMoney />,
-      link: '/dashboard/fund-request?pageId=request',
+      link: '/dashboard/fund/request?pageId=request',
+    },
+    {
+      type: 'link',
+      title: 'wallet transfer',
+      id: 'wallet-transfer',
+      icon: <BiTransferAlt />,
+      link: '/dashboard/fund/transfer?pageId=wallet-transfer',
     },
     {
       type: 'link',
@@ -152,58 +105,10 @@ export const SidebarOptions =
       icon: <BsFileEarmarkBarGraph />,
       children: [
         {
-          title: 'AePS reports',
-          link: '/dashboard/reports/aeps?pageId=reports',
-          id: "aepsReports",
-          soon: false,
-        },
-        {
-          title: 'BBPS reports',
-          link: '/dashboard/reports/bbps?pageId=reports',
-          id: "bbpsReports",
-          soon: false,
-        },
-        {
-          title: 'recharge reports',
-          link: '/dashboard/reports/recharge?pageId=reports',
-          id: "rechargeReports",
-          soon: false,
-        },
-        {
-          title: 'DMT reports',
-          link: '/dashboard/reports/dmt?pageId=reports',
-          id: "dmtReports",
-          soon: false,
-        },
-        {
           title: 'payout reports',
           link: '/dashboard/reports/payout?pageId=reports',
           id: "payoutReports",
           soon: false,
-        },
-        {
-          title: 'LIC reports',
-          link: '/dashboard/reports/lic?pageId=reports',
-          id: "licReports",
-          soon: true,
-        },
-        {
-          title: 'PAN reports',
-          link: '/dashboard/reports/pan?pageId=reports',
-          id: "panReports",
-          soon: true,
-        },
-        {
-          title: 'CMS reports',
-          link: '/dashboard/reports/pan?pageId=reports',
-          id: "cmsReports",
-          soon: true,
-        },
-        {
-          title: 'axis accounts',
-          link: '/dashboard/reports/axis?pageId=reports',
-          id: "axisReports",
-          soon: true,
         },
       ]
     },
@@ -239,14 +144,6 @@ const Sidebar = ({ isProfileComplete, userName, userImage, availablePages }) => 
     Router.push("/auth/login")
   }
 
-
-  useMemo(() => {
-    BackendAxios.get('/api/user/services').then((res) => {
-      setActiveServices(res.data.map((item) => item.type))
-    }).catch((err) => {
-      console.log(err)
-    })
-  }, [])
 
   return (
     <>
@@ -333,28 +230,15 @@ const Sidebar = ({ isProfileComplete, userName, userImage, availablePages }) => 
                           >
 
                             {option.children.map((item, key) => {
-                              if (availablePages.includes(item.id) != null) {
-                                return (
-                                  <Link key={key} href={item.link} style={{ width: '100%' }}>
-                                    <Text
-                                      w={'full'} textAlign={'left'}
-                                      px={3} py={2} _hover={{ bg: 'aqua' }}
-                                      textTransform={'capitalize'}
-                                    >{item.title}</Text>
-                                  </Link>
-                                )
-                              }
-                              else {
-                                return (
-                                  <Link key={key} href={item.link} style={{ width: '100%' }}>
-                                    <Text
-                                      w={'full'} textAlign={'left'}
-                                      px={3} py={2} _hover={{ bg: 'aqua' }}
-                                      textTransform={'capitalize'}
-                                    >{item.title}</Text>
-                                  </Link>
-                                )
-                              }
+                              return (
+                                <Link key={key} href={item.link} style={{ width: '100%' }}>
+                                  <Text
+                                    w={'full'} textAlign={'left'}
+                                    px={3} py={2} _hover={{ bg: 'aqua' }}
+                                    textTransform={'capitalize'}
+                                  >{item.title}</Text>
+                                </Link>
+                              )
                             })}
                           </VStack>
 

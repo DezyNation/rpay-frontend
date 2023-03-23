@@ -50,14 +50,6 @@ const Login = () => {
     const [mpin, setMpin] = useState(null)
 
     useEffect(() => {
-        // axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sanctum/csrf-cookie`, {
-        //     withCredentials: true,
-        //     headers: {
-        //         'Accept': 'application/json, text/plain, */*',
-        //         'Content-Type': 'application/json',
-        //         'X-Requested-With': 'XMLHttpRequest'
-        //     },
-        // })
         getLocation()
     }, [])
 

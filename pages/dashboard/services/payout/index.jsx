@@ -32,7 +32,7 @@ import {
     useToast
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
-import BackendAxios, {ClientAxios} from '../../../../lib/axios'
+import BackendAxios, { ClientAxios } from '../../../../lib/axios'
 import { Document, Page, Text as PText, StyleSheet, View, Image, PDFViewer, PDFDownloadLink } from '@react-pdf/renderer'
 
 const styles = StyleSheet.create({
@@ -101,8 +101,18 @@ const Payout = () => {
             amount: Formik.values.amount,
         })
         ).then((res) => {
-            setPayout_id(res.data.payout_id)
-            setPaymentModal(true)
+            if (res.data.payout_id) {
+                setPayout_id(res.data.payout_id)
+                setPaymentModal(true)
+            }
+            else {
+                Toast({
+                    status: 'error',
+                    title: 'Transaction Failed',
+                    description: res.data.Error,
+                    position: 'top-right'
+                })
+            }
             setIsLoading(false)
         }).catch(err => {
             Toast({

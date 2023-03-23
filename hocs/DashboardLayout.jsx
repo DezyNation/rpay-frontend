@@ -31,7 +31,7 @@ import BankDetails from './BankDetails'
 import Cookies from 'js-cookie';
 let bcrypt = require('bcryptjs')
 import { useRouter } from 'next/router';
-import BackendAxios, { ClientAxios } from '../lib/axios';
+import BackendAxios, { ClientAxios, DefaultAxios } from '../lib/axios';
 import Topbar from './Topbar';
 import SimpleAccordion from './SimpleAccordion';
 
@@ -48,33 +48,6 @@ const DashboardWrapper = (props) => {
         'support',
     ]
 
-    useEffect(() => {
-        ClientAxios.post('/api/user/fetch', {
-            user_id: Cookies.get('userId')
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((res) => {
-            foreverAllowedPages.concat(res.data[0].allowed_pages)
-            setAvailablePages(foreverAllowedPages.concat(res.data[0].allowed_pages))
-        }).catch((err) => {
-            console.log(err)
-        })
-    }, [])
-
-    // Check if user has paid onboarding fee or not
-    useEffect(() => {
-        BackendAxios.get('/api/user/check/onboard-fee').then((res) => {
-            if (res.data[0].onboard_fee == 0) {
-                if (!window.location.href.includes(`/services/activate`)) {
-                    if (!window.location.href.includes(`/fund-request`) && !window.location.href.includes(`/support-tickets`) && !window.location.href.includes(`/profile`)) {
-                        window.location.assign('/dashboard/services/activate?pageId=services')
-                    }
-                }
-            }
-        })
-    }, [])
 
 
     const [openNotification, setOpenNotification] = useState(false)
@@ -105,28 +78,8 @@ const DashboardWrapper = (props) => {
             setWallet('Error')
         })
 
-        // Fetch all notifications
-        ClientAxios.post('/api/user/fetch', {
-            user_id: localStorage.getItem('userId')
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((res) => {
-            setUserNotifications(res.data[0].notifications)
-        }).catch((err) => {
-            console.log(err)
-        })
-
     }, [])
 
-
-    useEffect(() => {
-        // Check for new notifications
-        if (globalNotifications.length != 0 || organisationNotifications != 0 || userNotifications != 0) {
-            setNewNotification(true)
-        }
-    }, [globalNotifications, organisationNotifications, userNotifications])
 
     useEffect(() => {
         let authentic = bcrypt.compareSync(`${localStorage.getItem("userId") + localStorage.getItem("userName")}`, Cookies.get("verified"))
@@ -219,18 +172,6 @@ const DashboardWrapper = (props) => {
                                         </VStack>
                                     </HStack>
                                 </Link>
-                                <Spacer w={8} />
-                                <Box
-                                    pos={'relative'}
-                                    boxSize={'10'} p={2} cursor={'pointer'}
-                                    color={'gray.600'} boxShadow={'md'}
-                                    rounded={'full'} bg={'white'}
-                                    display={'grid'} placeContent={'center'}
-                                    onClick={() => setOpenNotification(true)}
-                                >
-                                    <BsBell fontSize={'20'} />
-                                    {newNotification ? <Box boxSize={'2'} rounded={'full'} bg={'red'} position={'absolute'} top={'3'} right={'3'}></Box> : null}
-                                </Box>
 
                             </HStack>
                         </HStack>
@@ -419,57 +360,6 @@ const DashboardWrapper = (props) => {
                     </DrawerContent>
                 </Drawer>
             </Show>
-
-
-            {/* Notifications Drawer */}
-            <Drawer
-                isOpen={openNotification}
-                onClose={() => setOpenNotification(false)}
-                placement={'right'}
-            >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerHeader>
-                        Notifications
-                    </DrawerHeader>
-                    <DrawerBody>
-                        {
-                            globalNotifications.map((notification, key) => {
-                                return (
-                                    <SimpleAccordion
-                                        key={key}
-                                        title={notification.title}
-                                        content={notification.content}
-                                    />
-                                )
-                            })
-                        }
-                        {
-                            organisationNotifications.map((notification, key) => {
-                                return (
-                                    <SimpleAccordion
-                                        key={key}
-                                        title={notification.title}
-                                        content={notification.content}
-                                    />
-                                )
-                            })
-                        }
-                        {
-                            userNotifications.map((notification, key) => {
-                                return (
-                                    <SimpleAccordion
-                                        key={key}
-                                        title={notification.title}
-                                        content={notification.content}
-                                    />
-                                )
-                            })
-                        }
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
-
         </>
     )
 }
