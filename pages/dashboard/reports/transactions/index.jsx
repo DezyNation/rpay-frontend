@@ -67,7 +67,7 @@ const Ledger = () => {
     ])
 
     useEffect(()=>{
-        BackendAxios.get(`/api/admin/transactions-user/${localStorage.getItem('userId')}`).then((res)=>{
+        BackendAxios.get(`/user-transactions`).then((res)=>{
             console.log(res.data)
             setrowData(res.data)
         }).catch(err=>{
