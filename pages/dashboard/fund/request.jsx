@@ -12,14 +12,8 @@ import {
     Button,
     Select,
     HStack,
-    TableContainer,
-    Table,
-    Thead,
-    Tr,
-    Th,
-    Tbody,
-    Td,
     useToast,
+    VisuallyHidden
 } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import { Grid } from "gridjs";
@@ -325,6 +319,43 @@ const FundRequest = () => {
                         </AgGridReact>
                     </Box>
                 </Box>
+
+                <VisuallyHidden>
+                    <table id='printable-table'>
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                {
+                                    columns.map((column, key) => {
+                                        return (
+                                            <td key={key}>{column.headerName}</td>
+                                        )
+                                    })
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                rowData.map((data, key) => {
+                                    return (
+                                        <tr key={key}>
+                                            <td>{key+1}</td>
+                                            <td>{data.amount}</td>
+                                            <td>{data.status}</td>
+                                            <td>{data.bank_name}</td>
+                                            <td>{data.transaction_id}</td>
+                                            <td>{data.transaction_type}</td>
+                                            <td>{data.transaction_date}</td>
+                                            <td>{data.transaction_receipt}</td>
+                                            <td>{data.remarks}</td>
+                                            <td>{data.admin_remarks}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </VisuallyHidden>
             </DashboardWrapper>
         </>
     )

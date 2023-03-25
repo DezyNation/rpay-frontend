@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Layout from '../../layout'
 import {
     Box,
     Button,
@@ -7,12 +6,13 @@ import {
     HStack,
     VisuallyHidden,
 } from '@chakra-ui/react'
-import BackendAxios from '@/lib/utils/axios';
+import BackendAxios from '../../../../lib/axios'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import DashboardWrapper from '../../../../hocs/DashboardLayout';
 
 const ExportPDF = () => {
     const doc = new jsPDF('landscape')
@@ -67,7 +67,7 @@ const Ledger = () => {
     ])
 
     useEffect(()=>{
-        BackendAxios.get('/api/admin/transactions').then((res)=>{
+        BackendAxios.get(`/api/admin/transactions-user/${localStorage.getItem('userId')}`).then((res)=>{
             console.log(res.data)
             setrowData(res.data)
         }).catch(err=>{
@@ -78,7 +78,7 @@ const Ledger = () => {
 
     return (
         <>
-            <Layout pageTitle={'Transactions Ledger'}>
+            <DashboardWrapper titleText={'Transactions Ledger'}>
                 <HStack my={4} justifyContent={'space-between'}>
                     <Text fontSize={'lg'} fontWeight={'semibold'}>Transactions Ledger</Text>
                     <Button onClick={ExportPDF} colorScheme={'red'} size={'sm'}>Export PDF</Button>
@@ -136,7 +136,7 @@ const Ledger = () => {
                     </table>
                 </VisuallyHidden>
 
-            </Layout>
+            </DashboardWrapper>
         </>
     )
 }

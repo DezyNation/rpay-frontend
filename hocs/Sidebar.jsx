@@ -103,6 +103,18 @@ export const SidebarOptions =
           id: "payoutReports",
           soon: false,
         },
+        {
+          title: 'transactions ledger',
+          link: '/dashboard/reports/transactions?pageId=reports',
+          id: "payoutReports",
+          soon: false,
+        },
+        {
+          title: 'daily sales',
+          link: '/dashboard/reports/transactions/daily?pageId=reports',
+          id: "payoutReports",
+          soon: false,
+        },
       ]
     },
     {
