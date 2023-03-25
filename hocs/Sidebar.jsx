@@ -86,13 +86,6 @@ export const SidebarOptions =
     },
     {
       type: 'link',
-      title: 'wallet transfer',
-      id: 'wallet-transfer',
-      icon: <BiTransferAlt />,
-      link: '/dashboard/fund/transfer?pageId=wallet-transfer',
-    },
-    {
-      type: 'link',
       title: 'fund settlement',
       id: 'settlement',
       icon: <BsBank />,

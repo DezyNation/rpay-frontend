@@ -11,8 +11,13 @@ const AllCmsBanks = async (req, res) => {
     const { method } = req
     if (method == "POST") {
         await Connect()
-        const result = await CMSBank.find({"organisation_code": `${process.env.NEXT_PUBLIC_ORGANISATION.toUpperCase()}`}).exec()
-        res.status(200).json(result)
+        const result = await CMSBank.find({ "organisation_code": `${process.env.NEXT_PUBLIC_ORGANISATION.toUpperCase()}` })
+        if (result) {
+            res.status(200).json(result)
+        }
+        else{
+            res.status(204)
+        }
     }
     else {
         res.status(401).send(`${method} method not allowed!`)

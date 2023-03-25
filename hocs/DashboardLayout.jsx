@@ -31,30 +31,13 @@ import BankDetails from './BankDetails'
 import Cookies from 'js-cookie';
 let bcrypt = require('bcryptjs')
 import { useRouter } from 'next/router';
-import BackendAxios, { ClientAxios, DefaultAxios } from '../lib/axios';
+import BackendAxios from '../lib/axios';
 import Topbar from './Topbar';
 import SimpleAccordion from './SimpleAccordion';
 
 
 const DashboardWrapper = (props) => {
     const [availablePages, setAvailablePages] = useState([])
-    const foreverAllowedPages = [
-        'view-profile',
-        'edit-profile',
-        'reset-mpin',
-        'reset-password',
-        'activate',
-        'request',
-        'support',
-    ]
-
-
-
-    const [openNotification, setOpenNotification] = useState(false)
-    const [newNotification, setNewNotification] = useState(false)
-    const [globalNotifications, setGlobalNotifications] = useState([])
-    const [organisationNotifications, setOrganisationNotifications] = useState([])
-    const [userNotifications, setUserNotifications] = useState([])
 
     const [isProfileComplete, setIsProfileComplete] = useState(false)
     const [userName, setUserName] = useState("No Name")

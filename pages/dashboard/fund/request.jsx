@@ -27,38 +27,17 @@ import "gridjs/dist/theme/mermaid.css";
 import BackendAxios, { ClientAxios, FormAxios } from '../../../lib/axios';
 import jsPDF from 'jspdf';
 import "jspdf-autotable"
-import { useMemo } from 'react';
+import { AgGridReact } from 'ag-grid-react'
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 
 
-const ExportPDF = (currentRowData) => {
+const ExportPDF = () => {
     const doc = new jsPDF('landscape')
-    const columnDefs = [
-        '#',
-        'Amount',
-        'Bank Name',
-        'Trnxn ID',
-        'Status',
-        'Trnxn Date',
-        'Admin Remarks',
-    ]
 
-    doc.autoTable(columnDefs, currentRowData.map((item, key)=> {
-        return (
-            [
-                `${key+1}`,
-                `${item.amount} - ${item.transaction_type}`,
-                `${item.bank_name}`,
-                `${item.transaction_id}`,
-                `${item.status}`,
-                `${item.transaction_date}`,
-                `${item.remarks}`,
-                `${item.admin_remarks}`,
-            ]
-        )
-    }))
-    doc.setCharSpace(4)
-    //This is a key for printing
+    doc.autoTable({ html: '#printable-table' })
+
     doc.output('dataurlnewwindow');
 }
 
@@ -73,90 +52,6 @@ const FundRequest = () => {
     const [bankDetails, setBankDetails] = useState([])
 
 
-    // let parent
-    // let grandParent
-    // let greatGrandParent
-    // const [availableParents, setAvailableParents] = useState([])
-    // function getParents(userData) {
-    //     setAvailableParents([])
-    //     if (userData.parents_roles[0].parents_roles.length == 0) {
-    //         parent = userData.parents_roles[0]
-    //         parent = userData.parents_roles[0]
-
-    //         setAvailableParents([
-    //             {
-    //                 myParentId: parent.id,
-    //                 myParentName: parent.name,
-    //                 myParentRole: parent.roles[0].name.replace("_", " ")
-    //             }
-    //         ])
-
-    //         console.log("Parent Found")
-    //     }
-    //     if (userData.parents_roles[0].parents_roles[0].parents_roles.length == 0) {
-    //         parent = userData.parents_roles[0]
-    //         parent = userData.parents_roles[0]
-    //         grandParent = userData.parents_roles[0].parents_roles[0]
-    //         grandParent = userData.parents_roles[0].parents_roles[0]
-
-    //         setAvailableParents([
-    //             {
-    //                 myParentId: parent.id,
-    //                 myParentName: parent.name,
-    //                 myParentRole: parent.roles[0].name.replace("_", " ")
-    //             },
-    //             {
-    //                 myParentId: grandParent.id,
-    //                 myParentName: grandParent.name,
-    //                 myParentRole: grandParent.roles[0].name.replace("_", " ")
-    //             },
-    //         ])
-
-    //         console.log("Parent Found")
-    //     }
-
-    //     else {
-    //         parentName = userData.parents_roles[0]
-    //         parentId = userData.parents_roles[0]
-    //         grandParent = userData.parents_roles[0].parents_roles[0]
-    //         grandParent = userData.parents_roles[0].parents_roles[0]
-    //         greatGrandParent = userData.parents_roles[0].parents_roles[0].parents_roles[0]
-    //         greatGrandParent = userData.parents_roles[0].parents_roles[0].parents_roles[0]
-
-    //         setAvailableParents([
-    //             {
-    //                 myParentId: parent.id,
-    //                 myParentName: parent.name,
-    //                 myParentRole: parent.roles[0].name.replace("_", " ")
-    //             },
-    //             {
-    //                 myParentId: grandParent.id,
-    //                 myParentName: grandParent.name,
-    //                 myParentRole: grandParent.roles[0].name.replace("_", " ")
-    //             },
-    //             {
-    //                 myParentId: greatGrandParent.id,
-    //                 myParentName: greatGrandParent.name,
-    //                 myParentRole: greatGrandParent.roles[0].name.replace("_", " ")
-    //             },
-    //         ])
-
-    //         console.log("Parent Found")
-    //     }
-
-    //     console.log(availableParents)
-    // }
-
-    // useEffect(() => {
-    //     // Fetch parents
-    //     BackendAxios.get('/api/fund/fetch-parents').then((res) => {
-    //         getParents(res.data[0])
-    //     }).catch((err) => {
-    //         console.log(err)
-    //     })
-    // }, [])
-
-
     useEffect(() => {
         // Fetch available Banks
         ClientAxios.post('/api/cms/banks/fetch').then((res) => {
@@ -166,46 +61,45 @@ const FundRequest = () => {
 
     const [columns, setColumns] = useState([
         {
-            id: 'amount',
-            name: 'Amount',
+            field: 'amount',
+            headerName: 'Amount',
         },
         {
-            id: 'status',
-            name: 'Status',
+            field: 'status',
+            headerName: 'Status',
         },
         {
-            id: 'bank_name',
-            name: 'Bank Name',
+            field: 'bank_name',
+            headerName: 'Bank Name',
         },
         {
-            id: 'transaction_id',
-            name: 'Transaction ID',
+            field: 'transaction_id',
+            headerName: 'Transaction ID',
         },
         {
-            id: 'transaction_type',
-            name: 'Transaction Type',
+            field: 'transaction_type',
+            headerName: 'Transaction Type',
         },
         {
-            id: 'transaction_date',
-            name: 'Transaction Date',
+            field: 'transaction_date',
+            headerName: 'Transaction Date',
         },
         {
-            id: 'transaction_receipt',
-            name: 'Transaction Receipt',
+            field: 'transaction_receipt',
+            headerName: 'Transaction Receipt',
         },
         {
-            id: 'remarks',
-            name: 'Remarks',
+            field: 'remarks',
+            headerName: 'Remarks',
         },
         {
-            id: 'admin_remarks',
-            name: 'Admin Remarks',
+            field: 'admin_remarks',
+            headerName: 'Admin Remarks',
         },
     ],)
 
     const [rowData, setRowData] = useState([
         {
-            s_no: '',
             amount: '',
             status: '',
             bank_name: '',
@@ -248,8 +142,9 @@ const FundRequest = () => {
             var formData = new FormData(document.getElementById('request-form'))
             FormAxios.post('/api/fund/request-fund', formData).then((res) => {
                 Toast({
+                    status: 'success',
                     position: 'top-right',
-                    description: res.data,
+                    description: 'Fund request added!',
                 })
             }).catch(err => {
                 Toast({
@@ -261,25 +156,6 @@ const FundRequest = () => {
         }
     })
 
-
-    const grid = new Grid({
-        columns: columns,
-        data: rowData,
-        search: true,
-        style: {
-            th: {
-                'min-width': '240px'
-            },
-            td: {
-                'min-width': '240px'
-            }
-        },
-        resizable: true,
-        fixedHeader: true,
-    });
-    useEffect(() => {
-        grid.render(wrapperRef.current)
-    }, [])
 
     return (
         <>
@@ -433,11 +309,21 @@ const FundRequest = () => {
                     <HStack justifyContent={'space-between'}>
                         <Text fontSize={'lg'} pb={6}>Your Past Fund Requests</Text>
 
-                        <Button colorScheme={'red'} onClick={()=>ExportPDF(grid.config.data)}>Export PDF</Button>
+                        <Button colorScheme={'red'} onClick={ExportPDF}>Export PDF</Button>
                     </HStack>
-                    <div ref={wrapperRef}>
+                    <Box h={'sm'} className={'ag-theme-alpine'}>
+                        <AgGridReact
+                            rowData={rowData}
+                            columnDefs={columns}
+                            defaultColDef={{
+                                filter: true,
+                                floatingFilter: true,
+                                resizable: true
+                            }}
+                        >
 
-                    </div>
+                        </AgGridReact>
+                    </Box>
                 </Box>
             </DashboardWrapper>
         </>
