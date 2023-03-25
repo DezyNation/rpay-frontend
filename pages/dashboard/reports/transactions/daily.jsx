@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Layout from '../../layout'
 import { AgGridReact } from 'ag-grid-react'
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -10,9 +9,10 @@ import {
     HStack,
     VisuallyHidden,
 } from '@chakra-ui/react'
-import BackendAxios from '@/lib/utils/axios';
+import BackendAxios from '../../../../lib/axios'
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'
+import DashboardWrapper from '../../../../hocs/DashboardLayout';
 
 const ExportPDF = () => {
     const doc = new jsPDF('landscape')
@@ -78,7 +78,7 @@ const Ledger = () => {
 
     return (
         <>
-            <Layout pageTitle={'Transactions Ledger'}>
+            <DashboardWrapper titleText={'Daily Sales'}>
                 <HStack my={4} justifyContent={'space-between'}>
                     <Text fontSize={'lg'} fontWeight={'semibold'}>Transactions Ledger</Text>
                     <Button onClick={ExportPDF} colorScheme={'red'} size={'sm'}>Export PDF</Button>
@@ -136,7 +136,7 @@ const Ledger = () => {
                     </table>
                 </VisuallyHidden>
 
-            </Layout>
+            </DashboardWrapper>
         </>
     )
 }
