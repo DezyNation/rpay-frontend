@@ -93,7 +93,7 @@ const Payout = () => {
 
     function makePayout() {
         setIsLoading(true)
-        BackendAxios.post(`/api/razorpay/payout/new-payout/`, JSON.stringify({
+        BackendAxios.post(`/api/razorpay/payout/new-payout`, JSON.stringify({
             beneficiaryName: Formik.values.beneficiaryName,
             account: Formik.values.account,
             ifsc: Formik.values.ifsc,
@@ -127,7 +127,7 @@ const Payout = () => {
 
     const [rowdata, setRowdata] = useState([])
     useEffect(() => {
-        BackendAxios.get(`/api/razorpay/fetch-payout/`).then((res) => {
+        BackendAxios.get(`/api/razorpay/fetch-payout`).then((res) => {
             setRowdata(res.data)
         }).catch((err) => {
             console.log(err)
