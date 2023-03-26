@@ -93,7 +93,7 @@ const Payout = () => {
 
     function makePayout() {
         setIsLoading(true)
-        BackendAxios.post(`/api/razorpay/payout/new-payout/${serviceId}`, JSON.stringify({
+        BackendAxios.post(`/api/razorpay/payout/new-payout/`, JSON.stringify({
             beneficiaryName: Formik.values.beneficiaryName,
             account: Formik.values.account,
             ifsc: Formik.values.ifsc,
