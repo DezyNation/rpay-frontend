@@ -127,7 +127,7 @@ const Payout = () => {
 
     const [rowdata, setRowdata] = useState([])
     useEffect(() => {
-        BackendAxios.get(`/api/razorpay/fetch-payout`).then((res) => {
+        BackendAxios.post(`/api/razorpay/fetch-payout`).then((res) => {
             setRowdata(res.data)
         }).catch((err) => {
             console.log(err)
