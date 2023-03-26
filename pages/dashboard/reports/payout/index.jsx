@@ -21,6 +21,7 @@ import 'jspdf-autotable'
 const ExportPDF = () => {
   const doc = new jsPDF('landscape')
   doc.autoTable({ html: '#tableToPrint' })
+  doc.output('dataurlnewwindow');
 }
 
 const PayoutReport = () => {
@@ -82,24 +83,30 @@ const PayoutReport = () => {
           <AgGridReact
             columnDefs={colDefs}
             rowData={rowData}
+            defaultColDef={{
+              filter: true,
+              floatingFilter: true,
+            }}
           >
 
           </AgGridReact>
         </Box>
 
-        <Table id='tableToPrint'>
-          <Thead>
-            <Tr>
-              {
-                colDefs.map((item, key) => {
-                  return (
-                    <Th>{item.headerName}</Th>
-                  )
-                })
-              }
-            </Tr>
-          </Thead>
-        </Table>
+        <VisuallyHidden>
+          <Table id='tableToPrint'>
+            <Thead>
+              <Tr>
+                {
+                  colDefs.map((item, key) => {
+                    return (
+                      <Th>{item.headerName}</Th>
+                    )
+                  })
+                }
+              </Tr>
+            </Thead>
+          </Table>
+        </VisuallyHidden>
 
       </DashboardWrapper>
     </>
