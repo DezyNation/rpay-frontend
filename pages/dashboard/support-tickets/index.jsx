@@ -15,7 +15,7 @@ const SupportTickets = () => {
     const [rowData, setRowData] = useState([])
     const [columnDefs, setColumnDefs] = useState([
         {
-            field: "ticketId",
+            field: "id",
             headerName: "Ticket ID"
         },
         {
@@ -23,15 +23,16 @@ const SupportTickets = () => {
             headerName: "Title",
         },
         {
-            field: "message",
+            field: "body",
             headerName: "Message",
         },
         {
             field: "attachments",
             headerName: "Attachments",
+            cellRenderer: 'attachmentRenderer'
         },
         {
-            field: "linkedTransaction",
+            field: "transaction_id",
             headerName: "Linked Transaction ID",
         },
         {
@@ -39,11 +40,11 @@ const SupportTickets = () => {
             headerName: "Status",
         },
         {
-            field: "createdAt",
+            field: "created_at",
             headerName: "Created At",
         },
         {
-            field: "updatedAt",
+            field: "updated_at",
             headerName: "Updated At",
         },
     ])
@@ -52,9 +53,24 @@ const SupportTickets = () => {
         return {
             resizable: true,
             filter: true,
-            floatingFilter: true,
+            floatingFilter: true
         };
     }, []);
+
+
+    const attachmentRenderer = (params) => {
+        return (
+            <Button size={'xs'} colorScheme={'twitter'}>Download</Button>
+        )
+    }
+
+    useEffect(() => {
+        BackendAxios.get('/api/tickets').then(res => {
+            setRowData(res.data)
+        }).catch(err=>{
+            console.log(err)
+        })
+    }, [])
 
     return (
         <>
@@ -65,6 +81,9 @@ const SupportTickets = () => {
                         rowData={rowData}
                         columnDefs={columnDefs}
                         defaultColDef={defaultColDef}
+                        components={{
+                            'attachmentRenderer': attachmentRenderer
+                        }}
                     >
 
                     </AgGridReact>
