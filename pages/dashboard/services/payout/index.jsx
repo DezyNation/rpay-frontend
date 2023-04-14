@@ -71,7 +71,7 @@ const PaymentReceipt = ({ amount, payout_id, name, account }) => {
 }
 
 const Payout = () => {
-    const [provider, setProvider] = useState("payscope")
+    const [provider, setProvider] = useState("razorpay")
     const [serviceId, setServiceId] = useState("25")
     const { isOpen, onClose, onOpen } = useDisclosure()
     const Toast = useToast()
