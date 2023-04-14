@@ -30,7 +30,7 @@ const Ledger = () => {
         },
         {
             headerName: "Done By",
-            field: "trigered_by"
+            field: "done_by"
         },
         {
             headerName: "User Name",
