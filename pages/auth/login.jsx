@@ -222,6 +222,7 @@ const Login = () => {
                 ...(authMethod === "phone" && { "phone": formik.values.user_id }),
                 password: formik.values.password,
                 mpin: mpin,
+                latlong: Cookies.get('latlong'),
                 organization_code: process.env.NEXT_PUBLIC_ORGANISATION.toUpperCase(),
             }), {
                 withCredentials: true,
